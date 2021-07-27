@@ -1,4 +1,4 @@
 # NZ Camps
 
 
-To see the live app, check out https://powerful-river-85104.herokuapp.com/camps
+To see the live app, check out https://powerful-river-85104.herokuapp.com
