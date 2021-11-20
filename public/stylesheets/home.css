@@ -1,7 +1,7 @@
 body {
   height: 100vh;
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("https://images.unsplash.com/photo-1528287942171-fbe365d1d9ac?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80");
+    url("./robert-koorenny-Py2ULdPgHac-unsplash.jpg");
   background-size: cover;
   background-position: center;
   text-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.5);
@@ -13,16 +13,17 @@ body {
 }
 
 .nav-link {
-  padding: 0.25rem 0;
+  padding: 0.25rem 0.5rem;
+  font-size: 1.2rem;
   font-weight: 700;
-  color: rgba(255, 255, 255, 0.5);
+  color: white;
   margin-left: 1rem;
   border-bottom: 0.25rem solid transparent;
 }
 
 .nav-link:hover {
-  color: rgba(255, 255, 255, 0.5);
-  border-bottom-color: rgba(255, 255, 255, 0.5);
+  color: white;
+  border-bottom-color: white;
 }
 
 .nav-link.active {
@@ -32,6 +33,23 @@ body {
 
 .btn-secondary,
 .btn-secondary:hover {
-  color: #333;
-  text-shadow: none;
+  color: white;
+  background-color: #116530;
+}
+
+.home__title {
+  margin-top: -4rem;
+  margin-bottom: 2rem;
+  font-size: 3rem;
+}
+
+.home__subheader {
+  margin-bottom: 3rem;
+  font-size: 1.8rem;
+}
+
+.home__button {
+  color: white;
+  background-color: #18a558;
+  border: 1.5px solid #116530;
 }
