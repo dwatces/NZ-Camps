@@ -1,7 +1,7 @@
 mapboxgl.accessToken = mapToken;
 const map = new mapboxgl.Map({
   container: "cluster-map",
-  style: "mapbox://styles/mapbox/light-v10",
+  style: "mapbox://styles/mapbox/outdoors-v11",
   center: [174, -41],
   zoom: 4.5,
 });
@@ -30,7 +30,7 @@ map.on("load", function () {
       "circle-color": [
         "step",
         ["get", "point_count"],
-        "#51bbd6",
+        "#0dcaf0",
         100,
         "#f1f075",
         750,
@@ -58,8 +58,8 @@ map.on("load", function () {
     source: "camps",
     filter: ["!", ["has", "point_count"]],
     paint: {
-      "circle-color": "#11b4da",
-      "circle-radius": 4,
+      "circle-color": "#0dcaf0",
+      "circle-radius": 7,
       "circle-stroke-width": 1,
       "circle-stroke-color": "#fff",
     },

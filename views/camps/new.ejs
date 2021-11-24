@@ -1,7 +1,7 @@
 <% layout('layouts/boilerplate')%>
 
-<div class="row">
-  <h1 class="text-center">New Camp</h1>
+<div class="row mt-5">
+  <h1 class="text-center text-white">New Camp</h1>
   <div class="col-md-6 offset-md-3">
     <form
       action="/camps"
@@ -11,7 +11,7 @@
       enctype="multipart/form-data"
     >
       <div class="mb-3">
-        <label class="form-label" for="title">Title</label>
+        <label class="form-label text-white" for="title">Title</label>
         <input
           class="form-control"
           type="text"
@@ -21,7 +21,7 @@
         />
       </div>
       <div class="mb-3">
-        <label class="form-label" for="location">Location</label>
+        <label class="form-label text-white" for="location">Location</label>
         <input
           class="form-control"
           type="text"
@@ -30,7 +30,7 @@
           required
         />
       </div>
-      <label for="input">Upload Images</label>
+      <label class="text-white" for="input">Upload Images</label>
       <div class="input-group mb-3 mt-2">
         <input
           type="file"
@@ -41,7 +41,7 @@
         />
       </div>
       <div class="mb-3">
-        <label class="form-label" for="price">Camp Price</label>
+        <label class="form-label text-white" for="price">Camp Price</label>
         <div class="input-group mb-3">
           <span class="input-group-text" id="price">$</span>
           <input
@@ -55,7 +55,9 @@
         </div>
       </div>
       <div class="mb-3">
-        <label class="form-label" for="description">Description</label>
+        <label class="form-label text-white" for="description"
+          >Description</label
+        >
         <textarea
           class="form-control"
           type="text"
@@ -64,7 +66,7 @@
           required
         ></textarea>
       </div>
-      <div class="mb-3">
+      <div class="d-flex justify-content-center mb-3">
         <button class="btn btn-success">Add Camp</button>
       </div>
     </form>

@@ -13,10 +13,12 @@ module.exports.isLoggedIn = (req, res, next) => {
 };
 
 module.exports.validateCamp = (req, res, next) => {
+  const { id } = req.params;
   const { error } = campSchema.validate(req.body);
   if (error) {
     const msg = error.details.map((el) => el.message).join(",");
-    throw new ExpressError(msg, 400);
+    req.flash("error", "Please check your inputs, " + msg);
+    return res.redirect(`/camps/${id}/edit`);
   } else {
     next();
   }
@@ -43,10 +45,12 @@ module.exports.isReviewAuthor = async (req, res, next) => {
 };
 
 module.exports.validateReview = (req, res, next) => {
+  const { id } = req.params;
   const { error } = reviewSchema.validate(req.body);
   if (error) {
     const msg = error.details.map((el) => el.message).join(",");
-    throw new ExpressError(msg, 400);
+    req.flash("error", "Please check your inputs, " + msg);
+    return res.redirect(`/camps/${id}`);
   } else {
     next();
   }

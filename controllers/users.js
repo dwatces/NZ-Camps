@@ -11,7 +11,10 @@ module.exports.register = async (req, res, next) => {
     const registeredUser = await User.register(user, password);
     req.login(user, (err) => {
       if (err) return next(err);
-      req.flash("success", "Welcome to NZ Camps!");
+      req.flash(
+        "success",
+        `Welcome to NZ Camps, ${username}! add a camp you've visited before, or leave a review on an existing camp.`
+      );
       res.redirect("/camps");
     });
   } catch (e) {

@@ -1,3 +1,30 @@
+.background__color {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+    url("./mitchell-luo-CEowgw6VXbE-unsplash.jpg"),
+    linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+    url("./harry-knight-mqpY5vyNrKE-unsplash.jpg"),
+    linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+    url("./casey-horner-_aVKjJhFdn0-unsplash.jpg"),
+    linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+    url("./tyler-lastovich-MfRNe40ihls-unsplash.jpg"),
+    linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+    url("./anderson-aguirre-bjTQqa6o_cM-unsplash.jpg");
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, repeat;
+  background-size: contain;
+}
+
+.background__color__auth {
+  height: 100vh;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+    url("./mitchell-luo-CEowgw6VXbE-unsplash.jpg");
+  background-repeat: repeat;
+  background-size: cover;
+}
+
+.border__bottom {
+  border-bottom: 0.25rem solid white;
+}
+
 #cluster-map {
   width: 100%;
   height: 500px;

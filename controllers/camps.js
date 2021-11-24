@@ -5,7 +5,9 @@ const geoCoder = mbxGeocoding({ accessToken: mbxToken });
 const { cloudinary } = require("../cloudinary");
 
 module.exports.index = async (req, res) => {
-  const camps = await Camp.find({});
+  const camps = await Camp.find({})
+    .populate({ path: "reviews", populate: { path: "author" } })
+    .populate("author");
   res.render("camps/index", { camps });
 };
 
@@ -28,7 +30,6 @@ module.exports.createCamp = async (req, res, next) => {
     filename: file.filename,
   }));
   await camp.save();
-  console.log(camp);
   req.flash("success", "Successfully made a new camp!");
   res.redirect(`/camps/${camp._id}`);
 };
