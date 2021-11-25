@@ -22,18 +22,39 @@
 
     <title>NZ Camps</title>
   </head>
+  <% let rootPath = '../'; %>
   <body class="d-flex flex-column background__color">
     <%- include('../partials/navbar'); %>
     <main class="container mt-5">
       <div class="mt-5">
-        <h1 class="text-center text-white">
-          <span class="border__bottom">Explore Camps</span>
-        </h1>
+        <h1 class="text-center text-white">Explore Camps</h1>
       </div>
       <%- include('../partials/flash'); %>
       <div class="mt-5" id="cluster-map"></div>
       <div class="mb-5"></div>
-      <% for (let camp of camps) { %>
+      <% if(!user) { %>
+      <div class="mt-5 mb-5 text-center">
+        <h2 class="text-white">
+          Welcome, please register or login to create camps and upload reviews!
+        </h2>
+        <div class="mb-3 mt-3 d-flex justify-content-center">
+          <a
+            class="btn btn-success"
+            style="width: 8rem; margin-right: 2rem"
+            href="<%=process.env.BASE_URL%>/register"
+          >
+            Register
+          </a>
+          <a
+            class="btn btn-info"
+            style="width: 8rem"
+            href="<%=process.env.BASE_URL%>/login"
+          >
+            Login
+          </a>
+        </div>
+      </div>
+      <% } %> <% for (let camp of camps) { %>
       <div class="card mb-3">
         <div class="row">
           <div class="col-md-4">
@@ -50,24 +71,35 @@
           <div class="col-md-8">
             <div class="card-body">
               <h5 class="card-title"><%= camp.title %></h5>
-              <p class="card-text"><%= camp.description %></p>
               <p class="card-text">
                 <small class="text-muted"><%= camp.location %></small>
               </p>
-
-              <% if(camp.reviews.length) { %>
-              <p class="mt-2 mb-0">Reviews:</p>
-              <% for(let review of camp.reviews) { %>
-              <p
-                class="mb-3 starability-result"
-                data-rating="<%= review.rating %>"
-              ></p>
-              <% } %> <% } else { %>
-              <p class="card-text">No reviews found for this camp.</p>
-              <% } %>
-              <a class="btn btn-info text-white" href="/camps/<%=camp._id%>"
-                >View <%=camp.title%></a
-              >
+              <p class="card-text"><%= camp.description %></p>
+              <div class="seperate__section">
+                <% if(!camp.reviews.length) { %>
+                <h6 class="card-title">No Reviews Yet</h6>
+                <% } %> <% if(camp.reviews.length > 1) { %> <% let lastReview =
+                []; %> <% lastReview = map =>
+                Array.from(camp.reviews.values()).pop(); %>
+                <h6 class="card-title">Latest Review:</h6>
+                <p
+                  class="starability-result"
+                  data-rating="<%= lastReview().rating %>"
+                ></p>
+                <% } %> <% if(camp.reviews.length === 1) { %>
+                <h6 class="card-title">Latest Review:</h6>
+                <% for(review of camp.reviews) { %>
+                <p
+                  class="starability-result"
+                  data-rating="<%= review.rating %>"
+                ></p>
+                <% } %> <% } %>
+                <div class="mt-4">
+                  <a class="btn btn-info text-white" href="/camps/<%=camp._id%>"
+                    >View <%=camp.title%></a
+                  >
+                </div>
+              </div>
             </div>
           </div>
         </div>
