@@ -29,11 +29,8 @@
       <div class="mt-5">
         <h1 class="text-center text-white">Explore Camps</h1>
       </div>
-      <%- include('../partials/flash'); %>
-      <div class="mt-5" id="cluster-map"></div>
-      <div class="mb-5"></div>
-      <% if(!user) { %>
-      <div class="mt-5 mb-5 text-center">
+      <%- include('../partials/flash'); %> <% if(!user) { %>
+      <div class="mt-5 text-center">
         <h2 class="text-white">
           Welcome, please register or login to create camps and upload reviews!
         </h2>
@@ -54,7 +51,10 @@
           </a>
         </div>
       </div>
-      <% } %> <% for (let camp of camps) { %>
+      <% } %>
+      <div class="mt-5" id="cluster-map"></div>
+      <div class="mb-5"></div>
+      <% for (let camp of camps) { %>
       <div class="card mb-3">
         <div class="row">
           <div class="col-md-4">
