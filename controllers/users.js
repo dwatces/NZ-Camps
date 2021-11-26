@@ -9,14 +9,12 @@ module.exports.register = async (req, res, next) => {
     const { email, username, password } = req.body;
     const user = new User({ email, username });
     const registeredUser = await User.register(user, password);
-    const link = process.env.BASE_URL + "/camps/new";
-    const message =
-      `Welcome to NZ Camps, ${username}! add a camp you've visited before, by clicking here: <a href="` +
-      link +
-      `"></a>, or leave a review on an existing camp below.`;
     req.login(user, (err) => {
       if (err) return next(err);
-      req.flash("success", message);
+      req.flash(
+        "success",
+        `Welcome to NZ Camps, ${username}! add a camp you've visited before, or leave a review on an existing camp below.`
+      );
       res.redirect("/camps");
     });
   } catch (e) {

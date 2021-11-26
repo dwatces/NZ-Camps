@@ -56,6 +56,18 @@
           </a>
         </div>
       </div>
+      <% } %> <% if(user && camps.author != user._id) { %>
+      <div class="mt-5 text-center">
+        <div class="mb-3 mt-3 d-flex justify-content-center">
+          <a
+            class="btn btn-success"
+            style="width: 8rem"
+            href="<%=process.env.BASE_URL%>/camps/new"
+          >
+            New Camp
+          </a>
+        </div>
+      </div>
       <% } %>
       <div class="mt-5" id="cluster-map"></div>
       <div class="mb-5"></div>
