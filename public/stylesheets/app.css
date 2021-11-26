@@ -10,7 +10,6 @@
     linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
     url("./anderson-aguirre-bjTQqa6o_cM-unsplash.jpg");
   background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, repeat;
-  background-size: contain;
 }
 
 .background__color__auth {
@@ -19,14 +18,6 @@
     url("./mitchell-luo-CEowgw6VXbE-unsplash.jpg");
   background-repeat: repeat;
   background-size: cover;
-}
-
-.border__bottom {
-  border-bottom: 0.25rem solid white;
-}
-
-.seperate__section {
-  margin-top: 8.5%;
 }
 
 #cluster-map {

@@ -42,4 +42,7 @@ body {
     font-size: 1.3rem;
     margin-bottom: 1.5rem;
   }
+  .body {
+    height: 100vh;
+  }
 }

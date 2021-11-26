@@ -25,14 +25,22 @@
   .nav-link {
     padding: 0.2rem 0.2rem;
     margin-top: 1rem !important;
+    margin-left: 0 !important;
     font-size: 1rem;
     font-weight: bold;
-    background-color: rgba(0, 0, 0, 0.582) !important;
+    text-align: center !important;
+    width: 6rem !important;
   }
 
   .navbar__bg {
     height: 3.5rem;
     width: 5rem;
+  }
+
+  .mobile__bg {
+    background-color: rgba(0, 0, 0, 0.9) !important;
+    color: rgba(0, 0, 0, 0.9) !important;
+    padding-bottom: 1rem !important;
   }
 }
 
