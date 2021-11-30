@@ -6,6 +6,6 @@ To see the live app, check out https://nz-camps.herokuapp.com/
 
 Future work: 
 
-Increase speed of camps page retrieval 
+Increase speed of camps page retrieval of mongo data
 
 Add a home page for users, including my camps, my reviews
