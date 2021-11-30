@@ -4,4 +4,7 @@ This website uses Node.js, Express, and MongoDB to enable vistors to create a us
 
 To see the live app, check out https://nz-camps.herokuapp.com/
 
-Future work: Add a home page for users, including my camps, my reviews
+Future work: 
+
+*Increase speed of camps page retrieval _
+*Add a home page for users, including my camps, my reviews
