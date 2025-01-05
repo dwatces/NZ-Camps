@@ -1,6 +1,7 @@
 {
   "engines": {
-  "node": "18.x"
+  "node": "18.x",
+  "npm": ">=11.0.0"
 },
   "name": "nzcamps",
   "version": "1.0.0",
