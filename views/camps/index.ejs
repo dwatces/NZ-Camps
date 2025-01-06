@@ -19,11 +19,27 @@
       crossorigin="anonymous"
     />
 
-    <script src="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.js"></script>
+    <!-- Leaflet CSS -->
     <link
-      href="https://api.mapbox.com/mapbox-gl-js/v2.3.1/mapbox-gl.css"
       rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
     />
+
+    <!-- Leaflet MarkerCluster CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css"
+    />
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+    <!-- Leaflet MarkerCluster JS -->
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
 
     <title>NZ Camps</title>
   </head>
@@ -123,7 +139,6 @@
       </div>
       <%}%>
       <script>
-        const mapToken = "<%-process.env.MAPBOX_ACCESS_TOKEN%>";
         const camps = {features: <%-JSON.stringify(camps)%>};
       </script>
       <script src="js/clusterMap.js"></script>

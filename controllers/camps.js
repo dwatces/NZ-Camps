@@ -1,7 +1,6 @@
 const Camp = require("../models/camp");
-const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
-const mbxToken = process.env.MAPBOX_ACCESS_TOKEN;
-const geoCoder = mbxGeocoding({ accessToken: mbxToken });
+const { Opencage } = require('opencage-api-client');
+const opencage = new Opencage({ key: process.env.OPENCAGE_API_KEY });
 const { cloudinary } = require("../cloudinary");
 
 module.exports.index = async (req, res) => {
@@ -17,48 +16,29 @@ module.exports.newForm = (req, res) => {
 
 module.exports.createCamp = async (req, res, next) => {
   try {
-    // Check if geoCoder is a function
-    console.log("GeoCoder function:", geoCoder.forwardGeocode);
-    
-    const locationQuery = req.body.camp.location + ", New Zealand";  // Explicitly append New Zealand
-    const geoData = await geoCoder
-      .forwardGeocode({
-        query: locationQuery,
-        limit: 1, // Limit to 1 result to avoid ambiguity
-      })
-      .send();
+    // Geocoding request to OpenCage API
+    const locationQuery = req.body.camp.location + ", New Zealand";  // Append New Zealand to ensure accurate results
 
-    // Check if any geocoding result was returned
-    if (!geoData.body.features.length) {
+    const geoData = await opencage.geocode(locationQuery);
+
+    if (!geoData || geoData.results.length === 0) {
       req.flash("error", "Location not found. Please try again.");
       return res.redirect("back");
     }
 
-    // Optional: Log multiple geocoding results if they exist
-    if (geoData.body.features.length > 1) {
-      req.flash("warning", "Multiple locations found, picking the first one.");
-      console.log("Multiple matches found:", geoData.body.features);
-    }
-
-    const bestMatch = geoData.body.features[0];
-
-    // Optional: Validate coordinates to ensure they're within New Zealand's bounds
-    const [longitude, latitude] = bestMatch.geometry.coordinates;
-    if (latitude < -47.5 || latitude > -34.5 || longitude < 166.5 || longitude > 179) {
-      req.flash("error", "Coordinates do not seem to match a valid location in New Zealand.");
-      return res.redirect("back");
-    }
-
-    // Create the camp object
     const camp = new Camp(req.body.camp);
-    camp.geometry = bestMatch.geometry; // Set the coordinates from the best match
+    // Assign coordinates from OpenCage geocode
+    camp.geometry = {
+      type: "Point",
+      coordinates: [geoData.results[0].geometry.lng, geoData.results[0].geometry.lat],  // Extracting correct coordinates
+    };
+
     camp.author = req.user._id;
     camp.images = req.files.map((file) => ({
       url: file.path,
       filename: file.filename,
     }));
 
-    // Save the new camp to the database
     await camp.save();
     req.flash("success", "Successfully made a new camp!");
     res.redirect(`/camps/${camp._id}`);
