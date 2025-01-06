@@ -22,16 +22,6 @@ module.exports.createCamp = async (req, res, next) => {
       limit: 1,
     })
     .send();
-  console.log("Geocoding response:", geoData.body);
-
-  // Check the returned data for the coordinates
-  if (!geoData.body.features || geoData.body.features.length === 0) {
-    console.log("Location not found!");
-    return res.status(400).json({ error: "Location not found" });
-  }
-
-  const coordinates = geoData.body.features[0].geometry.coordinates;
-  console.log("Coordinates:", coordinates);
 
   const camp = new Camp(req.body.camp);
   camp.geometry = geoData.body.features[0].geometry;
