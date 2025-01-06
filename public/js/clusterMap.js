@@ -8,76 +8,29 @@ const map = new mapboxgl.Map({
 
 map.addControl(new mapboxgl.NavigationControl());
 
+// Add Camps Source with Clustering
 map.on("load", function () {
-  // Add a new source for GeoJSON data with clustering enabled
   map.addSource("camps", {
     type: "geojson",
     data: {
-      "type": "FeatureCollection",
-      "features": camps.map(camp => ({
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": camp.geometry.coordinates
+      type: "FeatureCollection",
+      features: camps.map(camp => ({
+        type: "Feature",
+        geometry: {
+          type: "Point",
+          coordinates: camp.geometry.coordinates,
         },
-        "properties": {
-          "title": camp.title,
-          "location": camp.location,
-          "popUpMarkup": `<strong><a href="/camps/${camp._id}">${camp.title}</a></strong><br><p>${camp.description}</p>`,
-          "price": camp.price,
-        }
-      }))
+        properties: {
+          title: camp.title,
+          location: camp.location,
+          popUpMarkup: `<strong><a href="/camps/${camp._id}">${camp.title}</a></strong><br><p>${camp.description}</p>`,
+          price: camp.price,
+        },
+      })),
     },
     cluster: true,
-    clusterMaxZoom: 14, // Max zoom level to cluster points
-    clusterRadius: 50, // Radius for clusters
-  });
-
-  // Add layers for clusters
-  map.addLayer({
-    id: "clusters",
-    type: "circle",
-    source: "camps",
-    filter: ["has", "point_count"],
-    paint: {
-      "circle-color": [
-        "step",
-        ["get", "point_count"],
-        "#0dcaf0",
-        100,
-        "#f1f075",
-        750,
-        "#f28cb1"
-      ],
-      "circle-radius": ["step", ["get", "point_count"], 20, 100, 30, 750, 40]
-    }
-  });
-
-  // Add layer to display cluster count
-  map.addLayer({
-    id: "cluster-count",
-    type: "symbol",
-    source: "camps",
-    filter: ["has", "point_count"],
-    layout: {
-      "text-field": "{point_count_abbreviated}",
-      "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
-      "text-size": 12
-    }
-  });
-
-  // Add layer for unclustered points (individual camps)
-  map.addLayer({
-    id: "unclustered-point",
-    type: "circle",
-    source: "camps",
-    filter: ["!", ["has", "point_count"]],
-    paint: {
-      "circle-color": "#0dcaf0",
-      "circle-radius": 7,
-      "circle-stroke-width": 1,
-      "circle-stroke-color": "#fff"
-    }
+    clusterMaxZoom: 14,
+    clusterRadius: 50,
   });
 
   // Handle cluster clicks
@@ -88,29 +41,53 @@ map.on("load", function () {
       if (err) return;
       map.easeTo({
         center: features[0].geometry.coordinates,
-        zoom: zoom
+        zoom: zoom,
       });
     });
   });
 
-  // Handle clicks on individual camps (unclustered points)
-  map.on("click", "unclustered-point", function (e) {
-    const coordinates = e.features[0].geometry.coordinates.slice();
-    const text = e.features[0].properties.popUpMarkup;
-
-    // Adjust coordinates if necessary
-    while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-      coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-    }
-
-    new mapboxgl.Popup().setLngLat(coordinates).setHTML(text).addTo(map);
+  // Add Marker Layer
+  map.addLayer({
+    id: "unclustered-point",
+    type: "circle",
+    source: "camps",
+    paint: {
+      "circle-color": "#11b4da",
+      "circle-radius": 6,
+      "circle-stroke-width": 2,
+      "circle-stroke-color": "#fff",
+    },
+    filter: ["!", ["has", "point_count"]],
   });
 
-  // Change cursor to pointer on hover over clusters
-  map.on("mouseenter", "clusters", function () {
-    map.getCanvas().style.cursor = "pointer";
+  // Add Cluster Layer
+  map.addLayer({
+    id: "clusters",
+    type: "circle",
+    source: "camps",
+    paint: {
+      "circle-color": [
+        "step",
+        ["get", "point_count"],
+        "#51bbd6",
+        100,
+        "#f1f075",
+        750,
+        "#f28cb1",
+      ],
+      "circle-radius": ["step", ["get", "point_count"], 15, 100, 20, 750, 25],
+    },
   });
-  map.on("mouseleave", "clusters", function () {
-    map.getCanvas().style.cursor = "";
+
+  // Add Cluster Count
+  map.addLayer({
+    id: "cluster-count",
+    type: "symbol",
+    source: "camps",
+    layout: {
+      "text-field": "{point_count_abbreviated}",
+      "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
+      "text-size": 12,
+    },
   });
 });

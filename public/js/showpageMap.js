@@ -1,23 +1,36 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoiZHdhdGNlcyIsImEiOiJjbTVrOGV2YXIwaWx0Mm5wdGluaTN5MHBhIn0.PbSNIOVUgEtqC40Hv4DaTA';
+
+// Initialize the map
 const map = new mapboxgl.Map({
   container: "map",
   style: "mapbox://styles/mapbox/outdoors-v11",
-  center: camp.geometry.coordinates,
+  center: [172.6812, -34.4329], // Default center (Cape Reinga, NZ)
   zoom: 10,
 });
 
+// Log and validate camp coordinates
 console.log(camp);
 console.log("Setting coordinates:", camp.geometry.coordinates);
 let coordinates = camp.geometry.coordinates;
+
 if (Array.isArray(coordinates) && coordinates.length === 2) {
-  console.log("Longitude:", coordinates[0], "Latitude:", coordinates[1]);
+  const [lng, lat] = coordinates;
+  if (lng >= -180 && lng <= 180 && lat >= -90 && lat <= 90) {
+    console.log("Longitude:", lng, "Latitude:", lat);
+    map.setCenter(coordinates);
+  } else {
+    console.error("Invalid longitude or latitude values:", coordinates);
+  }
 } else {
-  console.error("Invalid coordinates format", coordinates);
+  console.error("Invalid coordinates format:", coordinates);
 }
 
-new mapboxgl.Marker()
-  .setLngLat(camp.geometry.coordinates)
-  .setPopup(
-    new mapboxgl.Popup({ offset: 25 }).setHTML(`<h4>${camp.title}</h4>`)
-  )
-  .addTo(map);
+// Add Marker
+if (coordinates && Array.isArray(coordinates)) {
+  new mapboxgl.Marker()
+    .setLngLat(coordinates)
+    .setPopup(
+      new mapboxgl.Popup({ offset: 25 }).setHTML(`<h4>${camp.title}</h4>`)
+    )
+    .addTo(map);
+}
