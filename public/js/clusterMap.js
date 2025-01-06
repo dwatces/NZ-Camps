@@ -18,7 +18,7 @@ map.on("load", function () {
         "type": "Feature",
         "geometry": {
           "type": "Point",
-          "coordinates": camp.geometry.coordinates[1,0]
+          "coordinates": camp.geometry.coordinates
         },
         "properties": {
           "title": camp.title,
@@ -87,7 +87,7 @@ map.on("load", function () {
     map.getSource("camps").getClusterExpansionZoom(clusterId, function (err, zoom) {
       if (err) return;
       map.easeTo({
-        center: features[0].geometry.coordinates[1,0],
+        center: features[0].geometry.coordinates,
         zoom: zoom
       });
     });
