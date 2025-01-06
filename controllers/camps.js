@@ -1,4 +1,5 @@
 const Camp = require("../models/camp");
+const { OpencageGeocoder } = require('opencage-api-client');
 const opencage = new OpencageGeocoder({ key: process.env.OPENCAGE_ACCESS_TOKEN })
   
 const { cloudinary } = require("../cloudinary");
