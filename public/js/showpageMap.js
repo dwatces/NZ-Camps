@@ -1,7 +1,7 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoiZHdhdGNlcyIsImEiOiJjbTVrOGV2YXIwaWx0Mm5wdGluaTN5MHBhIn0.PbSNIOVUgEtqC40Hv4DaTA';
 
-console.log("Setting coordinates:", camp.geometry.coordinates);
-camp.geometry.coordinates = [172.6812, -34.4329];
+console.log("Raw camp data:", camp);
+const coordinates = camp.geometry.coordinates;
 
 fetch('/api/camps/677b2b8e6396d300158a7ac6')
   .then(res => res.json())
@@ -11,11 +11,10 @@ fetch('/api/camps/677b2b8e6396d300158a7ac6')
 const map = new mapboxgl.Map({
   container: "map",
   style: "mapbox://styles/mapbox/outdoors-v11",
-  center: [172.6812, -34.4329], // Default center (Cape Reinga, NZ)
+  center: camp.geometry.coordinates,
   zoom: 10,
 });
 
-const coordinates = camp.geometry.coordinates;
 
 if (Array.isArray(coordinates) && coordinates.length === 2) {
   const longitude = coordinates[0];
