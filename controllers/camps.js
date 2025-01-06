@@ -14,14 +14,14 @@ module.exports.index = async (req, res) => {
 module.exports.newForm = (req, res) => {
   res.render("camps/new");
 };
-
+module.exports.createCamp = async (req, res, next) => {
 const geoData = await geoCoder
   .forwardGeocode({
     query: req.body.camp.location, // Should be something like "Pandora Bay, New Zealand"
     limit: 1
   })
   .send();
-
+}
 console.log('Geocoding response:', geoData.body);
 
 // Check the returned data for the coordinates
