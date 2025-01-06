@@ -17,27 +17,30 @@ module.exports.newForm = (req, res) => {
 
 module.exports.createCamp = async (req, res, next) => {
   try {
+    // Check if geoCoder is a function
+    console.log("GeoCoder function:", geoCoder.forwardGeocode);
+    
     const locationQuery = req.body.camp.location + ", New Zealand";  // Explicitly append New Zealand
     const geoData = await geoCoder
       .forwardGeocode({
         query: locationQuery,
-        limit: 3, // Increase limit to get multiple results if necessary
+        limit: 1, // Limit to 1 result to avoid ambiguity
       })
       .send();
 
+    // Check if any geocoding result was returned
     if (!geoData.body.features.length) {
       req.flash("error", "Location not found. Please try again.");
       return res.redirect("back");
     }
 
-    // Handle multiple results: Choose the first or let the user confirm
-    const bestMatch = geoData.body.features[0];
-    
-    // Optional: If you want to log and inspect multiple matches:
+    // Optional: Log multiple geocoding results if they exist
     if (geoData.body.features.length > 1) {
       req.flash("warning", "Multiple locations found, picking the first one.");
       console.log("Multiple matches found:", geoData.body.features);
     }
+
+    const bestMatch = geoData.body.features[0];
 
     // Optional: Validate coordinates to ensure they're within New Zealand's bounds
     const [longitude, latitude] = bestMatch.geometry.coordinates;
@@ -46,14 +49,16 @@ module.exports.createCamp = async (req, res, next) => {
       return res.redirect("back");
     }
 
+    // Create the camp object
     const camp = new Camp(req.body.camp);
-    camp.geometry = bestMatch.geometry; // Use the best match coordinates
+    camp.geometry = bestMatch.geometry; // Set the coordinates from the best match
     camp.author = req.user._id;
     camp.images = req.files.map((file) => ({
       url: file.path,
       filename: file.filename,
     }));
 
+    // Save the new camp to the database
     await camp.save();
     req.flash("success", "Successfully made a new camp!");
     res.redirect(`/camps/${camp._id}`);
@@ -61,6 +66,19 @@ module.exports.createCamp = async (req, res, next) => {
     req.flash("error", "Error in creating camp: " + error.message);
     return res.redirect("back");
   }
+};
+
+module.exports.showCamps = async (req, res) => {
+  const camp = await Camp.findById(req.params.id)
+    .populate({ path: "reviews", populate: { path: "author" } })
+    .populate("author");
+  
+  if (!camp) {
+    req.flash("error", "Camp not found");
+    return res.redirect("/camps");
+  }
+
+  res.render("camps/show", { camp });
 };
 
 
