@@ -1,8 +1,8 @@
 mapboxgl.accessToken = 'pk.eyJ1IjoiZHdhdGNlcyIsImEiOiJjbTVrOGV2YXIwaWx0Mm5wdGluaTN5MHBhIn0.PbSNIOVUgEtqC40Hv4DaTA';
 
-console.log("Raw camp data:", camp);
-console.log("Coordinates field:", camp.geometry.coordinates);
+console.log("Setting coordinates:", camp.geometry.coordinates);
 camp.geometry.coordinates = [172.6812, -34.4329];
+
 fetch('/api/camps/677b2b8e6396d300158a7ac6')
   .then(res => res.json())
   .then(data => console.log("API response:", data))
@@ -15,21 +15,24 @@ const map = new mapboxgl.Map({
   zoom: 10,
 });
 
-// Log and validate camp coordinates
-console.log(camp);
-console.log("Setting coordinates:", camp.geometry.coordinates);
-let coordinates = camp.geometry.coordinates;
+const coordinates = camp.geometry.coordinates;
 
 if (Array.isArray(coordinates) && coordinates.length === 2) {
-  const [lng, lat] = coordinates;
-  if (lng >= -180 && lng <= 180 && lat >= -90 && lat <= 90) {
-    console.log("Longitude:", lng, "Latitude:", lat);
-    map.setCenter(coordinates);
-  } else {
-    console.error("Invalid longitude or latitude values:", coordinates);
-  }
+  const longitude = coordinates[0];
+  const latitude = coordinates[1];
+  console.log("Longitude:", longitude, "Latitude:", latitude);
+
+  new mapboxgl.Marker()
+    .setLngLat([longitude, latitude]) // Force the coordinates
+    .setPopup(
+      new mapboxgl.Popup({ offset: 25 }).setHTML(`
+        <h4>${camp.title}</h4>
+        <p>${camp.description}</p>
+      `)
+    )
+    .addTo(map);
 } else {
-  console.error("Invalid coordinates format:", coordinates);
+  console.error("Invalid coordinates:", coordinates);
 }
 
 // Add Marker
