@@ -1,4 +1,4 @@
-mapboxgl.accessToken = 'sk.eyJ1IjoiZHdhdGNlcyIsImEiOiJjbTVrOWxyeGMwNXJkMnFwemV2d3B3eGV5In0.XnkmMhRTO1jOJpjTCyfBOQ';
+mapboxgl.accessToken = 'pk.eyJ1IjoiZHdhdGNlcyIsImEiOiJjbTVrOGV2YXIwaWx0Mm5wdGluaTN5MHBhIn0.PbSNIOVUgEtqC40Hv4DaTA';
 const map = new mapboxgl.Map({
   container: "map",
   style: "mapbox://styles/mapbox/outdoors-v11",
