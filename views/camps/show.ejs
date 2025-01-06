@@ -1,8 +1,9 @@
 <% layout('layouts/boilerplate')%>
 <link rel="stylesheet" href="/stylesheets/stars.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
 <div class="responsive__column row mt-5">
-  <div class="col-lg-6 col-col-sm-10">
+  <div class="col-lg-6 col-sm-10">
     <div id="campCarousel" class="carousel slide" data-bs-ride="carousel">
       <div class="carousel-inner">
         <% camp.images.forEach((img, i) => { %>
@@ -62,8 +63,8 @@
       <% } %>
     </div>
   </div>
-  <div class="col-lg-6 col-col-sm-10">
-    <div class="mb-5 card" id="map"></div>
+  <div class="col-lg-6 col-sm-10">
+    <div class="mb-5 card" id="map" style="height: 400px;"></div>
     <% if(user) { %>
     <h2 class="text-white">Leave a Review</h2>
     <form
@@ -133,7 +134,8 @@
       </div>
       <button class="btn btn-success">Submit</button>
     </form>
-    <% } %> <% for(let review of camp.reviews) { %>
+    <% } %>
+    <% for(let review of camp.reviews) { %>
     <div class="card mb-3">
       <div class="card-body">
         <h5 class="card-title"><%= review.author.username %></h5>
@@ -160,7 +162,23 @@
     <% } %>
   </div>
 </div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
-  const camp = <%-JSON.stringify(camp)%>;
+  // Get camp data from backend
+  const camp = <%- JSON.stringify(camp) %>;
+
+  // Initialize the map
+  const map = L.map('map').setView([camp.geometry.coordinates[1], camp.geometry.coordinates[0]], 13);
+
+  // Set the tile layer for the map (OpenStreetMap in this case)
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  // Add a marker for the camp location
+  L.marker([camp.geometry.coordinates[1], camp.geometry.coordinates[0]]).addTo(map)
+    .bindPopup('<strong>' + camp.title + '</strong><br>' + camp.location)
+    .openPopup();
 </script>
 <script src="/js/showpageMap.js"></script>
