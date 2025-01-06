@@ -10,6 +10,8 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 const markers = L.markerClusterGroup();
 
 // Loop through camps and create markers with popup info
+const camps = <%- JSON.stringify(camps) %>; // Ensure camps data is passed from backend
+
 camps.forEach(camp => {
   const marker = L.marker([camp.geometry.coordinates[1], camp.geometry.coordinates[0]])  // [lat, lng]
     .bindPopup(`
