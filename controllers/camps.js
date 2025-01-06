@@ -23,7 +23,7 @@ module.exports.createCamp = async (req, res, next) => {
   })
   .send();
   console.log('Geocoding response:', geoData.body);
-  
+
   const camp = new Camp(req.body.camp);
   camp.geometry = geoData.body.features[0].geometry;
   camp.author = req.user._id;
