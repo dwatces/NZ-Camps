@@ -16,23 +16,34 @@ module.exports.newForm = (req, res) => {
 };
 
 module.exports.createCamp = async (req, res, next) => {
-  const geoData = await geoCoder
-    .forwardGeocode({
-      query: req.body.camp.location,
-      limit: 1,
-    })
-    .send();
+  try {
+    const geoData = await geoCoder
+      .forwardGeocode({
+        query: req.body.camp.location,
+        limit: 1,
+      })
+      .send();
 
-  const camp = new Camp(req.body.camp);
-  camp.geometry = geoData.body.features[0].geometry;
-  camp.author = req.user._id;
-  camp.images = req.files.map((file) => ({
-    url: file.path,
-    filename: file.filename,
-  }));
-  await camp.save();
-  req.flash("success", "Successfully made a new camp!");
-  res.redirect(`/camps/${camp._id}`);
+    if (!geoData.body.features.length) {
+      req.flash("error", "Location not found. Please try again.");
+      return res.redirect("back");
+    }
+
+    const camp = new Camp(req.body.camp);
+    camp.geometry = geoData.body.features[0].geometry; // Set coordinates from geocode
+    camp.author = req.user._id;
+    camp.images = req.files.map((file) => ({
+      url: file.path,
+      filename: file.filename,
+    }));
+
+    await camp.save();
+    req.flash("success", "Successfully made a new camp!");
+    res.redirect(`/camps/${camp._id}`);
+  } catch (error) {
+    req.flash("error", "Error in creating camp: " + error.message);
+    return res.redirect("back");
+  }
 };
 
 module.exports.showCamps = async (req, res) => {
