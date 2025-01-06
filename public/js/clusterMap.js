@@ -8,7 +8,7 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 
 // Initialize MarkerCluster Group
 const markers = L.markerClusterGroup();
-
+console.log("Camps data:", camps);
 // Loop through camps and create markers with popup info
 camps.forEach(camp => {
   const marker = L.marker([camp.geometry.coordinates[1], camp.geometry.coordinates[0]])  // [lat, lng]
