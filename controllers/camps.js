@@ -16,44 +16,22 @@ module.exports.newForm = (req, res) => {
 };
 
 module.exports.createCamp = async (req, res, next) => {
-  try {
-    const geoData = await geoCoder
-      .forwardGeocode({
-        query: req.body.camp.location,
-        limit: 1
-      })
-      .send();
-    
-    console.log('Geocoding response:', geoData.body);
+  const geoData = await geoCoder
+  .forwardGeocode({
+      query: req.body.camp.location,
+      limit: 1
+  })
+  .send();
+  console.log('Geocoding response:', geoData.body);
 
-    if (!geoData.body.features || geoData.body.features.length === 0) {
-      console.log('No valid location found!');
-      return res.status(400).json({ error: 'Location not found' });
-    }
-
-    const coordinates = geoData.body.features[0].geometry.coordinates;
-    console.log('Coordinates:', coordinates);
-
-    // Proceed with saving the camp
-    const camp = new Camp(req.body.camp);
-    camp.geometry = {
-      type: 'Point',
-      coordinates: coordinates
-    };
-    camp.author = req.user._id;
-    camp.images = req.files.map((file) => ({
-      url: file.path,
-      filename: file.filename,
-    }));
-    
-    await camp.save();
-    res.status(201).json(camp);
-
-  } catch (err) {
-    console.error('Error occurred during geocoding or saving camp:', err);
-    res.status(500).json({ error: 'Server error' });
-  }
-};
+  const camp = new Camp(req.body.camp);
+  camp.geometry = geoData.body.features[0].geometry;
+  camp.author = req.user._id;
+  camp.images = req.files.map((file) => ({
+    url: file.path,
+    filename: file.filename,
+  }));
+  await camp.save();
   req.flash("success", "Successfully made a new camp!");
   res.redirect(`/camps/${camp._id}`);
 };
