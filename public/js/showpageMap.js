@@ -1,4 +1,4 @@
-mapboxgl.accessToken = process.env.MAPBOX_ACCESS_TOKEN;
+mapboxgl.accessToken = sk.eyJ1IjoiZHdhdGNlcyIsImEiOiJjbTVrOWxyeGMwNXJkMnFwemV2d3B3eGV5In0.XnkmMhRTO1jOJpjTCyfBOQ;
 const map = new mapboxgl.Map({
   container: "map",
   style: "mapbox://styles/mapbox/outdoors-v11",
