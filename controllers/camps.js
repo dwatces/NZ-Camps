@@ -30,9 +30,8 @@ module.exports.createCamp = async (req, res, next) => {
     return res.status(400).json({ error: "Location not found" });
   }
 
-  const coordinates = geoData.body.features[0].geometry.coordinates;
+  const coordinates = geoData.body.features[0].geometry.coordinates[1,0];
   console.log("Coordinates:", coordinates);
-  v;
 
   const camp = new Camp(req.body.camp);
   camp.geometry = geoData.body.features[0].geometry;
