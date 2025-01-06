@@ -1,6 +1,6 @@
 const Camp = require("../models/camp");
 const { Opencage } = require('opencage-api-client');
-const opencage = new Opencage({ key: process.env.OPENCAGE_API_KEY });
+const opencage = new Opencage({ key: process.env.OPENCAGE_ACCESS_TOKEN });
 const { cloudinary } = require("../cloudinary");
 
 module.exports.index = async (req, res) => {
