@@ -6,6 +6,8 @@ const map = new mapboxgl.Map({
   zoom: 10,
 });
 
+console.log(camp);
+
 new mapboxgl.Marker()
   .setLngLat(camp.geometry.coordinates)
   .setPopup(
