@@ -7,9 +7,16 @@ const map = new mapboxgl.Map({
 });
 
 console.log(camp);
+console.log("Setting coordinates:", camp.geometry.coordinates);
+let coordinates = camp.geometry.coordinates;
+if (Array.isArray(coordinates) && coordinates.length === 2) {
+  console.log("Longitude:", coordinates[0], "Latitude:", coordinates[1]);
+} else {
+  console.error("Invalid coordinates format", coordinates);
+}
 
 new mapboxgl.Marker()
-  .setLngLat([-36.8485, 174.7633])
+  .setLngLat(camp.geometry.coordinates)
   .setPopup(
     new mapboxgl.Popup({ offset: 25 }).setHTML(`<h4>${camp.title}</h4>`)
   )
