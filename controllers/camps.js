@@ -1,13 +1,5 @@
 const Camp = require("../models/camp");
-const opencage = require('opencage-api-client');
-
-opencage.geocode({ q: 'your address here', key: process.env.OPENCAGE_ACCESS_TOKEN })
-    .then(response => {
-        console.log(response);
-    })
-    .catch(error => {
-        console.log(error);
-    });
+const opencage = new OpencageGeocoder({ key: process.env.OPENCAGE_ACCESS_TOKEN })
   
 const { cloudinary } = require("../cloudinary");
 
