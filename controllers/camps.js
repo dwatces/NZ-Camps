@@ -17,10 +17,11 @@ module.exports.newForm = (req, res) => {
 
 module.exports.createCamp = async (req, res, next) => {
   try {
+    const locationQuery = req.body.camp.location + ", New Zealand";  // Explicitly append New Zealand
     const geoData = await geoCoder
       .forwardGeocode({
-        query: req.body.camp.location,
-        limit: 1,
+        query: locationQuery,
+        limit: 3, // Increase limit to get multiple results if necessary
       })
       .send();
 
@@ -29,8 +30,24 @@ module.exports.createCamp = async (req, res, next) => {
       return res.redirect("back");
     }
 
+    // Handle multiple results: Choose the first or let the user confirm
+    const bestMatch = geoData.body.features[0];
+    
+    // Optional: If you want to log and inspect multiple matches:
+    if (geoData.body.features.length > 1) {
+      req.flash("warning", "Multiple locations found, picking the first one.");
+      console.log("Multiple matches found:", geoData.body.features);
+    }
+
+    // Optional: Validate coordinates to ensure they're within New Zealand's bounds
+    const [longitude, latitude] = bestMatch.geometry.coordinates;
+    if (latitude < -47.5 || latitude > -34.5 || longitude < 166.5 || longitude > 179) {
+      req.flash("error", "Coordinates do not seem to match a valid location in New Zealand.");
+      return res.redirect("back");
+    }
+
     const camp = new Camp(req.body.camp);
-    camp.geometry = geoData.body.features[0].geometry; // Set coordinates from geocode
+    camp.geometry = bestMatch.geometry; // Use the best match coordinates
     camp.author = req.user._id;
     camp.images = req.files.map((file) => ({
       url: file.path,
@@ -46,16 +63,6 @@ module.exports.createCamp = async (req, res, next) => {
   }
 };
 
-module.exports.showCamps = async (req, res) => {
-  const camp = await Camp.findById(req.params.id)
-    .populate({ path: "reviews", populate: { path: "author" } })
-    .populate("author");
-  if (!camp) {
-    req.flash("error", "Camp not found");
-    return res.redirect("/camps");
-  }
-  res.render("camps/show", { camp });
-};
 
 module.exports.editForm = async (req, res) => {
   const { id } = req.params;
