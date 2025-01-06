@@ -9,7 +9,7 @@ const map = new mapboxgl.Map({
 console.log(camp);
 
 new mapboxgl.Marker()
-  .setLngLat(camp.geometry.coordinates)
+  .setLngLat([-36.8485, 174.7633])
   .setPopup(
     new mapboxgl.Popup({ offset: 25 }).setHTML(`<h4>${camp.title}</h4>`)
   )
